@@ -10,6 +10,8 @@ use App\Models\Album;
 
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\Auth;
+
 
 class UserController extends Controller
 {
@@ -27,13 +29,6 @@ class UserController extends Controller
     {
         return view('bandas');
     }
-
-
-//*****Btn Editar*****/
-
-
-
-
 
 //*****Apagar*****/
 
@@ -53,7 +48,7 @@ public function showAlbuns($id)
     return view('albuns', compact('albuns'));
 }
 
-//**Editar */
+//****Editar*****/
 
 public function editarBanda($id)
 {
@@ -68,19 +63,19 @@ public function editarBanda($id)
 
 public function updateBanda(Request $request)
 {
-    // Validação dos dados do formulário
+    // Validar fomr
     $request->validate([
         'nome' => 'required|string|max:255',
         'numero_de_albuns' => 'required|integer',
         'foto' => 'nullable|image|mimes:jpg,jpeg,png',
     ]);
 
-    // Atualiza os dados da banda no banco
+    // Atualizar
     DB::table('allbands')->where('id', $request->id)
         ->update([
             'nome' => $request->nome,
             'numero_de_albuns' => $request->numero_de_albuns,
-            'updated_at' => now(), // Atualiza a data de modificação
+            'updated_at' => now(),
         ]);
 
     // Se uma nova foto for enviada, atualiza a foto
@@ -96,7 +91,7 @@ public function updateBanda(Request $request)
             }
         }
 
-        // Salva a nova foto
+        // Salvar nova foto
         $foto = $request->file('foto');
         $fotoPath = $foto->store('bandas_fotos', 'public');
 
@@ -109,13 +104,6 @@ public function updateBanda(Request $request)
 
     return redirect()->route('bandas')->with('message', 'Banda atualizada com sucesso!');
 }
-
-
-
-
-
-
-
 
 //
 

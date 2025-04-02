@@ -6,6 +6,13 @@ use App\Models\Allband; //importando modelo
 
 use App\Http\Controllers\UserController; //importando controlador
 
+use Illuminate\Support\Facades\Route;
+
+use Illuminate\Support\Facades\Auth;
+
+use Laravel\Fortify\Fortify;
+
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -63,6 +70,15 @@ Route::get('/bandas/{id}/delete', [UserController::class, 'apagarBanda'])->name(
 Route::get('/bandas/{id}/editar', [UserController::class, 'editarBanda'])->name('bandas.editar');
 
 Route::post("/update-banda", [UserController::class, 'updateBanda'])->name('bandas.update');
+
+//*****Fortify*****//
+
+Fortify::loginView(function () {
+    return view('auth.login');
+});
+
+Route::middleware('auth')->get('/dashboard', [UserController::class, 'showDashboard'])->name('dashboard');
+Route::post('/logout', [UserController::class, 'logout'])->name('logout');
 
 
 
