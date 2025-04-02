@@ -18,6 +18,11 @@
     <div class="form-group">
         <label for="foto">Foto/Imagem</label>
         <input type="file" class="form-control" id="foto" name="foto">
+        @if ($banda->foto)
+            <div class="mt-2">
+                <img src="{{ asset('img/fotomodelo.jpg') }}" alt="Foto Modelo" width="200">
+            </div>
+        @endif
     </div>
 
     <div class="form-group">
@@ -27,5 +32,6 @@
 
     <button type="submit" class="btn btn-primary">Atualizar</button>
 </form>
+
 
 @endsection

@@ -85,6 +85,18 @@ public function updateBanda(Request $request)
 
     // Se uma nova foto for enviada, atualiza a foto
     if ($request->hasFile('foto')) {
+        // Localiza a banda
+        $banda = DB::table('allbands')->where('id', $request->id)->first();
+
+        // Se a banda já tiver uma foto, apaga a foto antiga
+        if ($banda && $banda->foto) {
+            $fotoAntiga = public_path('storage/' . $banda->foto);
+            if (file_exists($fotoAntiga)) {
+                unlink($fotoAntiga); // Apaga a foto antiga
+            }
+        }
+
+        // Salva a nova foto
         $foto = $request->file('foto');
         $fotoPath = $foto->store('bandas_fotos', 'public');
 
