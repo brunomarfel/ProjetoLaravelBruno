@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('foto');
             $table->date('data_lancamento');
-            $table->foreignId('band_id')->constrained('allbands')->onDelete('cascade');  // Chave estrangeira para allbands
+            $table->foreignId('band_id')->constrained('allbands')->onDelete('cascade');  
             $table->timestamps();
         });
     }

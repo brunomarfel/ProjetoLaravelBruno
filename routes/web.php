@@ -2,15 +2,14 @@
 
 use Illuminate\Http\Request;
 
-use App\Models\Allband;
+use App\Models\Allband; //importando modelo
 
-use App\Http\Controllers\UserController; //importar controlador
+use App\Http\Controllers\UserController; //importando controlador
 
 
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::get('/home', [UserController::class, 'returnHome'])->name('home');
 
@@ -18,13 +17,15 @@ Route::get('/usuarios', [UserController::class, 'returnUsuarios'])->name('usuari
 
 Route::get('/bandas', [UserController::class, 'returnBandas'])->name('bandas');
 
+
 //******* */
 
 
 Route::get('/bandas', function () {
     $bandas = AllBand::all(); // Buscar todas as bandas
     return view('bandas', compact('bandas'));
-});
+})->name('bandas');
+
 
 Route::post('/bandas', function (Request $request) {
     // Validação dos dados
@@ -34,7 +35,7 @@ Route::post('/bandas', function (Request $request) {
         'numero_de_albuns' => 'required|integer',
     ]);
 
-    // Salvar a nova banda
+    // Adicionar nova banda
     $foto = $request->file('foto');
     $fotoPath = $foto->store('bandas_fotos', 'public');
 
@@ -44,28 +45,26 @@ Route::post('/bandas', function (Request $request) {
         'numero_de_albuns' => $request->input('numero_de_albuns'),
     ]);
 
-    // Redirecionar de volta para a página de bandas com uma mensagem de sucesso
+    // Msg
     return redirect('/bandas')->with('success', 'Banda adicionada com sucesso!');
 });
 
-//*****Btn Ver*****//
 
-// Rota para exibir os álbuns de uma banda
-Route::get('/bandas/{id}/albuns', function ($id) {
-    return view('albuns', ['id' => $id]);
-})->name('bandas.albuns');
+//*****Ver*****//
 
-//*****Btn Apagar*****//
+Route::get('/bandas/{id}/albuns', [UserController::class, 'showAlbuns'])->name('bandas.albuns');
 
-// Rota para apagar uma banda
-Route::delete('/bandas/{id}', function ($id) {
-    $banda = App\Models\AllBand::findOrFail($id);
-    $banda->delete();
-    return redirect()->route('bandas')->with('success', 'Banda apagada com sucesso!');
-})->name('bandas.apagar');
+//*****Apagar*****//
+
+Route::get('/bandas/{id}/delete', [UserController::class, 'apagarBanda'])->name('apagarBanda');
+
+//*****Editar*****//
+
+Route::get('/bandas/{id}/editar', [UserController::class, 'editarBanda'])->name('bandas.editar');
+
+Route::post("/update-banda", [UserController::class, 'updateBanda'])->name('bandas.update');
 
 
-Route::delete('/bandas/{id}', [UserController::class, 'apagarBanda'])->name('apagarBanda'); //Apagar
 
 
 

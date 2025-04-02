@@ -51,12 +51,13 @@
             @foreach ($bandas as $banda)
                 <tr>
                     <td>{{ $banda->nome }}</td>
-                    <td><img src="{{ Storage::url($banda->foto) }}" alt="" width="100"></td>
+                    <td><img src="{{ asset('img/fotomodelo.jpg') }}" alt="Foto Modelo" width="100"></td>
                     <td>{{ $banda->numero_de_albuns }}</td>
                     <td>
-                        <a href="{{ route('bandas.albuns', $banda->id) }}" class="btn btn-primary">Ver</a>
-                        <a href="#" class="btn btn-warning">Editar</a>
-                        <a href="{{ route('bandas.albuns', $banda->id) }}" class="btn btn-danger">Apagar</a>
+                        {{-- <a href="{{ route('bandas.albuns', $banda->id) }}" class="btn btn-primary">Ver</a> --}}
+                        <a href="{{ route('bandas.albuns', $banda->id) }}" class="btn btn-primary">Ver albuns</a>
+                        <a href="{{ route('bandas.editar', $banda->id) }}" class="btn btn-warning">Editar</a>
+                        <a href="{{ route('apagarBanda', $banda->id) }}" class="btn btn-danger">Apagar</a>
                     </td>
                 </tr>
             @endforeach
